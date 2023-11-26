@@ -50,11 +50,11 @@ find_package(FLTK REQUIRED NO_MODULE)
 
 add_subdirectory(libs)
 
-add_executable(${PROJECT_NAME} src/main.cpp)
+add_executable(${PROJECT_NAME} src/PasswordManager.cpp)
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${FLTK_INCLUDE_DIRS})
 
-target_link_libraries(${PROJECT_NAME} fltk)
+target_link_libraries(${PROJECT_NAME} fltk GUI)
 
 if(${BUILD_TEST})
   enable_testing()
