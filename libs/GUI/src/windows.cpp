@@ -22,7 +22,7 @@ Fl_Group *password2(int W, int H, const char *title) {
   int x = (W - w) / 2;
   int y = (H - h) / 2;
   Fl_Button *change = new Fl_Button(x, y, w, h, "Change");
-  group->user_data((void *)"button");
+  change->user_data((void *)"button");
   group->end();
   return group;
 }
@@ -41,7 +41,15 @@ std::optional<Fl_Widget*> getWidget(Fl_Group *group, const char *user_data) {
   return {};
 }
 
-void go2window1(Fl_Widget *w, void *v) {}
+void go2window1(Fl_Widget *w, void *v) {
+  Fl_Group **groups = (Fl_Group **)v;
+  groups[0]->show();
+  groups[1]->hide();
+}
 
-void go2window2(Fl_Widget *w, void *v) {}
+void go2window2(Fl_Widget *w, void *v) {
+  Fl_Group **groups = (Fl_Group **)v;
+  groups[0]->hide();
+  groups[1]->show();
+}
 } // namespace window
