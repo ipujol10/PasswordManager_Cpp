@@ -27,7 +27,7 @@ Fl_Group *password2(int W, int H, const char *title) {
   return group;
 }
 
-std::optional<Fl_Widget*> getWidget(Fl_Group *group, const char *user_data) {
+Fl_Widget *getWidget(Fl_Group *group, const char *user_data) {
   for (int i = 0; i < group->children(); i++) {
     Fl_Widget *child = group->child(i);
     auto data = child->user_data();
@@ -38,7 +38,7 @@ std::optional<Fl_Widget*> getWidget(Fl_Group *group, const char *user_data) {
       return child;
     }
   }
-  return {};
+  return nullptr;
 }
 
 void go2window1(Fl_Widget *w, void *v) {
