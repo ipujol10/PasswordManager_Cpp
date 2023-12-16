@@ -1,5 +1,5 @@
-#include <FL/Fl_Window.H>
 #include <FL/Fl.H>
+#include <FL/Fl_Window.H>
 #include <GUI/windows.hpp>
 
 int main(int argc, char *argv[]) {
@@ -11,12 +11,8 @@ int main(int argc, char *argv[]) {
   Fl_Group *groups[2] = {password, password2};
   password->show();
   password2->hide();
-  window::getWidget(password, "button")
-      .value()
-      ->callback(window::go2window2, groups);
-  window::getWidget(password2, "button")
-      .value()
-      ->callback(window::go2window1, groups);
+  window::getWidget(password, "button")->callback(window::go2window2, groups);
+  window::getWidget(password2, "button")->callback(window::go2window1, groups);
   window->show();
   window->show(argc, argv);
   return Fl::run();
