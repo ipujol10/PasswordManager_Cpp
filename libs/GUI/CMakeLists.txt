@@ -6,13 +6,13 @@ set(FLTK_DIR /opt/fltk/build/)
 
 find_package(FLTK REQUIRED CONFIG)
 
-set(SOURCE windows.cpp)
+set(SOURCE windows.cpp menus.cpp)
 foreach (item IN LISTS SOURCE)
     list(APPEND SOURCE src/${item})
     list(REMOVE_ITEM SOURCE ${item})
 endforeach()
 
-set(HEADER windows.hpp)
+set(HEADER windows.hpp menus.hpp)
 foreach (item IN LISTS HEADER)
     list(APPEND HEADER include/GUI/${item})
     list(REMOVE_ITEM HEADER ${item})
