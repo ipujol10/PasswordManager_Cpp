@@ -1,4 +1,5 @@
 #include "windows.hpp"
+#include "menus.hpp"
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Secret_Input.H>
 #include <FL/Fl_Box.H>
@@ -6,18 +7,20 @@
 namespace window {
 MainWindow::MainWindow(int width, int height, const char *title)
     : Fl_Window(width, height, title) {
-  password_group = password(width, height, title);
-  password_group2 = password2(width, height, title);
+  password(width, height, title);
+  password2(width, height, title);
 
-  const int HEIGHT = 100, WIDTH = 300;
+  const int HEIGHT = 100, WIDTH = 300, MENU_HEIGHT = 20;
   help = new Fl_Window(WIDTH, HEIGHT, "Help");
   Fl_Box *text = new Fl_Box(0, 0, WIDTH, HEIGHT, "This is help");
   help->end();
   help->hide();
 
+  menuBar = menu::menu(width, MENU_HEIGHT, this);
+  this->add(menuBar);
+
   password_group->show();
   password_group2->hide();
-  this->end();
 }
 
 MainWindow::~MainWindow() {
@@ -26,27 +29,27 @@ MainWindow::~MainWindow() {
   delete help;
 }
 
-Fl_Group *MainWindow::password(int W, int H, const char *title) {
-  Fl_Group *group = new Fl_Group(0, 0, W, H, title);
+void MainWindow::password(int W, int H, const char *title) {
+  password_group = new Fl_Group(0, 0, W, H, title);
   int w = 300, h = 25;
   int x = (W - w) / 2;
   int y = (H - h) / 2;
   Fl_Secret_Input *password = new Fl_Secret_Input(x, y, w, h, "Password");
   Fl_Button *change = new Fl_Button(x, y + 50, 100, 25, "Change");
   change->callback(go2pass2, this);
-  group->end();
-  return group;
+  password_group->end();
+  this->add(password_group);
 }
 
-Fl_Group *MainWindow::password2(int W, int H, const char *title) {
-  Fl_Group *group = new Fl_Group(0, 0, W, H, title);
+void MainWindow::password2(int W, int H, const char *title) {
+  password_group2 = new Fl_Group(0, 0, W, H, title);
   int w = 100, h = 25;
   int x = (W - w) / 2;
   int y = (H - h) / 2;
   Fl_Button *change = new Fl_Button(x, y, w, h, "Change");
   change->callback(go2pass1, this);
-  group->end();
-  return group;
+  password_group2->end();
+  this->add(password_group2);
 }
 
 void MainWindow::go2pass1(Fl_Widget *w, void *v) {
