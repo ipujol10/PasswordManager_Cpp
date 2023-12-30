@@ -1,55 +1,63 @@
 #include "windows.hpp"
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Secret_Input.H>
-#include <cstring>
+#include <FL/Fl_Box.H>
 
 namespace window {
-Fl_Group *password(int W, int H, const char *title) {
+MainWindow::MainWindow(int width, int height, const char *title)
+    : Fl_Window(width, height, title) {
+  password_group = password(width, height, title);
+  password_group2 = password2(width, height, title);
+
+  const int HEIGHT = 100, WIDTH = 300;
+  help = new Fl_Window(WIDTH, HEIGHT, "Help");
+  Fl_Box *text = new Fl_Box(0, 0, WIDTH, HEIGHT, "This is help");
+  help->end();
+  help->hide();
+
+  password_group->show();
+  password_group2->hide();
+  this->end();
+}
+
+MainWindow::~MainWindow() {
+  delete password_group;
+  delete password_group2;
+  delete help;
+}
+
+Fl_Group *MainWindow::password(int W, int H, const char *title) {
   Fl_Group *group = new Fl_Group(0, 0, W, H, title);
   int w = 300, h = 25;
   int x = (W - w) / 2;
   int y = (H - h) / 2;
   Fl_Secret_Input *password = new Fl_Secret_Input(x, y, w, h, "Password");
   Fl_Button *change = new Fl_Button(x, y + 50, 100, 25, "Change");
-  change->user_data((void *)"button");
+  change->callback(go2pass2, this);
   group->end();
   return group;
 }
 
-Fl_Group *password2(int W, int H, const char *title) {
+Fl_Group *MainWindow::password2(int W, int H, const char *title) {
   Fl_Group *group = new Fl_Group(0, 0, W, H, title);
   int w = 100, h = 25;
   int x = (W - w) / 2;
   int y = (H - h) / 2;
   Fl_Button *change = new Fl_Button(x, y, w, h, "Change");
-  change->user_data((void *)"button");
+  change->callback(go2pass1, this);
   group->end();
   return group;
 }
 
-Fl_Widget *getWidget(Fl_Group *group, const char *user_data) {
-  for (int i = 0; i < group->children(); i++) {
-    Fl_Widget *child = group->child(i);
-    auto data = child->user_data();
-    if (data == (void *)0x0) {
-      continue;
-    }
-    if (strcmp((char *)data, user_data) == 0) {
-      return child;
-    }
-  }
-  return nullptr;
+void MainWindow::go2pass1(Fl_Widget *w, void *v) {
+  MainWindow *window = (MainWindow *)v;
+  window->password_group->show();
+  window->password_group2->hide();
 }
 
-void go2window1(Fl_Widget *w, void *v) {
-  Fl_Group **groups = (Fl_Group **)v;
-  groups[0]->show();
-  groups[1]->hide();
-}
-
-void go2window2(Fl_Widget *w, void *v) {
-  Fl_Group **groups = (Fl_Group **)v;
-  groups[0]->hide();
-  groups[1]->show();
+void MainWindow::go2pass2(Fl_Widget *w, void *v) {
+  MainWindow *window = (MainWindow *)v;
+  window->password_group->hide();
+  window->password_group2->show();
 }
 } // namespace window
