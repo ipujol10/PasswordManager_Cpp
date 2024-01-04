@@ -1,10 +1,11 @@
 #pragma once
 
-#include <FL/Fl_Window.H>
+#include <FL/Fl_Box.H>
 #include <FL/Fl_Menu_Bar.H>
+#include <FL/Fl_Window.H>
 
 namespace window {
-class MainWindow: public Fl_Window {
+class MainWindow : public Fl_Window {
 private:
   Fl_Group *password_group;
   Fl_Group *password_group2;
@@ -20,5 +21,14 @@ public:
   ~MainWindow();
 
   Fl_Window *help;
+};
+
+class HelpWindow : public Fl_Window {
+private:
+  Fl_Box *text;
+
+public:
+  HelpWindow(int width, int height, const char *title, const char *label);
+  ~HelpWindow();
 };
 } // namespace window

@@ -1,8 +1,8 @@
 #include "windows.hpp"
 #include "menus.hpp"
+#include <FL/Enumerations.H>
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Secret_Input.H>
-#include <FL/Fl_Box.H>
 
 namespace window {
 MainWindow::MainWindow(int width, int height, const char *title)
@@ -11,9 +11,7 @@ MainWindow::MainWindow(int width, int height, const char *title)
   password2(width, height, title);
 
   const int HEIGHT = 100, WIDTH = 300, MENU_HEIGHT = 20;
-  help = new Fl_Window(WIDTH, HEIGHT, "Help");
-  Fl_Box *text = new Fl_Box(0, 0, WIDTH, HEIGHT, "This is help");
-  help->end();
+  help = new HelpWindow(WIDTH, HEIGHT, "Help", "This is help");
   help->hide();
 
   menuBar = menu::menu(width, MENU_HEIGHT, this);
@@ -63,4 +61,15 @@ void MainWindow::go2pass2(Fl_Widget *w, void *v) {
   window->password_group->hide();
   window->password_group2->show();
 }
+
+HelpWindow::HelpWindow(int width, int height, const char *title,
+                       const char *label)
+    : Fl_Window(width, height, title) {
+  text = new Fl_Box(0, 0, width, height, label);
+  text->box(FL_EMBOSSED_BOX);
+  text->align(FL_ALIGN_LEFT | FL_ALIGN_INSIDE);
+  this->add(text);
+}
+
+HelpWindow::~HelpWindow() { delete text; }
 } // namespace window
