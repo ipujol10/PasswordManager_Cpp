@@ -4,7 +4,7 @@ set(PROJECT_NAME PasswordManager)
 
 project(${PROJECT_NAME} VERSION 1.0)
 
-set(FLTK_DIR /opt/fltk/)
+set(FLTK_DIR external/fltk/)
 
 find_package(FLTK REQUIRED NO_MODULE)
 
