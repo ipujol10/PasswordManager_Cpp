@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        ".clang-format": "yaml",
+        ".clang-tidy": "yaml"
+    },
+    "editor.formatOnSave": true,
+    "cmake.copyCompileCommands": "${workspaceFolder}/compile_commands.json",
+    "C_Cpp.clang_format_path": "{workspaceFolder}/.clang-format",
+    "C_Cpp.codeAnalysis.clangTidy.path": "{workspaceFolder}/.clang-tidy",
+    "C_Cpp.codeAnalysis.clangTidy.useBuildPath": true,
+    "editor.cursorSurroundingLines": 8
+}
