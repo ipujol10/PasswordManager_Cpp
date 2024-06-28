@@ -4,7 +4,19 @@ set(PROJECT_NAME PasswordManager)
 
 project(${PROJECT_NAME} VERSION 1.0)
 
-set(FLTK_DIR external/fltk/)
+if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/external/fltk")
+    message("Install FLTK...")
+    message("Downloading FLTK..")
+    execute_process(
+        COMMAND git clone https://github.com/fltk/fltk.git external/FLTK
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    )
+
+else()
+    message("FLTK is already installed.")
+endif()
+
+set(FLTK_DIR "${CMAKE_CURRENT_SOURCE_DIR}/external/fltk/")
 
 find_package(FLTK REQUIRED NO_MODULE)
 
