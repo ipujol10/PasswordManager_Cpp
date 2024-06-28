@@ -2,7 +2,7 @@ project(GUI)
 
 set(LIBRARY_NAME GUI)
 
-set(FLTK_DIR /opt/fltk/build/)
+set(FLTK_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../external/fltk/share/fltk)
 
 find_package(FLTK REQUIRED CONFIG)
 
