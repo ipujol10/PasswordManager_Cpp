@@ -1,1 +1,21 @@
 BasedOnStyle: Google
+
+Language: Cpp
+AlignArrayOfStructures: Right
+AllowShortBlocksOnASingleLine: Always
+AllowShortEnumsOnASingleLine: false
+AllowShortLambdasOnASingleLine: All
+AllowShortLoopsOnASingleLine: true
+ColumnLimit: 90
+EmptyLineBeforeAccessModifier: LogicalBlock
+FixNamespaceComments: true
+NamespaceIndentation: None
+QualifierAlignment: Left
+ReferenceAlignment: Right
+SpaceAfterCStyleCast: false
+SpaceAfterLogicalNot: false
+SpaceAfterTemplateKeyword: false
+SpaceBeforeAssignmentOperators: true
+SpaceInEmptyBlock: false
+SpaceInEmptyParentheses: false
+SpacesInAngles: Never
