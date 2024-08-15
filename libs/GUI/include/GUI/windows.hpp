@@ -6,7 +6,7 @@
 
 namespace window {
 class MainWindow : public Fl_Window {
-private:
+ private:
   Fl_Group *password_group;
   Fl_Group *password_group2;
   Fl_Menu_Bar *menuBar;
@@ -16,19 +16,19 @@ private:
   static void go2pass1(Fl_Widget *w, void *v);
   static void go2pass2(Fl_Widget *w, void *v);
 
-public:
+ public:
   MainWindow(int width, int height, const char *title);
-  ~MainWindow();
+  ~MainWindow() override;
 
   Fl_Window *help;
 };
 
 class HelpWindow : public Fl_Window {
-private:
+ private:
   Fl_Box *text;
 
-public:
+ public:
   HelpWindow(int width, int height, const char *title, const char *label);
-  ~HelpWindow();
+  ~HelpWindow() override;
 };
-} // namespace window
+}  // namespace window
