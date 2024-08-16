@@ -22,10 +22,10 @@ if (NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/external/fltk)
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/external/FLTK
     )
     execute_process(
-        COMMAND cmake 
-            -DFLTK_BUILD_TEST=OFF 
-            -DFLTK_BUILD_HTML_DOCS=OFF 
-            -DFLTK_BUILD_PDF_DOCS=OFF 
+        COMMAND cmake
+            -DFLTK_BUILD_TEST=OFF
+            -DFLTK_BUILD_HTML_DOCS=OFF
+            -DFLTK_BUILD_PDF_DOCS=OFF
             -DCMAKE_INSTALL_PREFIX=${CMAKE_CURRENT_SOURCE_DIR}/external/fltk
             ..
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/external/FLTK/build

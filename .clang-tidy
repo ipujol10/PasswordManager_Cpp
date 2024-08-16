@@ -1,5 +1,5 @@
 ---
-Checks:          '*,
+Checks: '*,
         -abseil-*,
         -altera-*,
         -android-*,
@@ -56,4 +56,3 @@ CheckOptions:
   - key:             google-readability-function-size.StatementThreshold
     value:           '800'
 ...
-
