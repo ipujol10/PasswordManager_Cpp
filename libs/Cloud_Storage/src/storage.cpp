@@ -2,6 +2,4 @@
 
 #include <iostream>
 
-namespace storage {
-Storage::Storage() { std::cout << "TEST\n"; }
-}  // namespace storage
+namespace storage {}  // namespace storage
