@@ -1,6 +1,12 @@
 ---
 Checks: '-*,
+        bugprone-standalone-empty,
+        bugprone-suspicious-include,
+        bugprone-switch-missing-default-case,
         cppcoreguidelines-avoid-magic-numbers
+        cppcoreguidelines-prefer-member-initializer,
+        misc-const-correctness,
+        misc-include-cleaner,
 				modernize-avoid-bind,
 				modernize-deprecated-headers,
 				modernize-loop-convert,
@@ -18,7 +24,10 @@ Checks: '-*,
 				modernize-use-nullptr,
 				modernize-use-override,
 				modernize-use-using,
-        readability-identifier-naming'
+        readability-duplicate-include,
+        readability-else-after-return,
+        readability-identifier-naming,
+        readability-make-member-function-const'
 WarningsAsErrors: true
 HeaderFilterRegex: ''
 AnalyzeTemporaryDtors: false
@@ -75,3 +84,4 @@ CheckOptions:
     value:           lower_case
   - key:             readability-identifier-naming.IgnoreMainLikeFunctions
     value:           1
+...

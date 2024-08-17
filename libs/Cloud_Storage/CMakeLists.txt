@@ -6,13 +6,20 @@ set(FLTK_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../external/fltk/share/fltk)
 
 find_package(FLTK REQUIRED CONFIG)
 
-set(SOURCE storage.cpp)
+include(FetchContent)
+FetchContent_Declare(
+    googletest
+    URL https://github.com/google/googletest/archive/refs/tags/v1.14.0.zip
+    )
+FetchContent_MakeAvailable(googletest)
+
+set(SOURCE google_drive.cpp)
 foreach(item IN LISTS SOURCE)
     list(APPEND SOURCE src/${item})
     list(REMOVE_ITEM SOURCE ${item})
 endforeach()
 
-set(HEADER storage.hpp)
+set(HEADER storage.hpp google_drive.hpp)
 foreach(item IN LISTS HEADER)
     list(APPEND HEADER include/cloud_storage/${item})
     list(REMOVE_ITEM HEADER ${item})
@@ -32,4 +39,6 @@ target_include_directories(${LIBRARY_NAME} PUBLIC
 
 target_include_directories(${LIBRARY_NAME} PUBLIC ${FLTK_INCLUDE_DIRS})
 
-target_link_libraries(${LIBRARY_NAME} fltk)
+target_link_libraries(${LIBRARY_NAME} fltk gtest_main)
+
+add_subdirectory(tests)
