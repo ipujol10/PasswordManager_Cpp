@@ -11,7 +11,7 @@ class Storage {
    * @param file_path the path to the file to be uploaded
    * @return if the upload has been performed succesfully
    */
-  virtual bool upload(const std::string& file_path) = 0;
+  virtual bool Upload(const std::string& file_path) = 0;
 
   // TODO: maybe change the files argument
   /**
@@ -20,7 +20,7 @@ class Storage {
    * @param file_path path where to download the file
    * @return if the download has been perfomed succesfully
    */
-  virtual bool download(const std::string& cloud_file_path,
+  virtual bool Download(const std::string& cloud_file_path,
                         const std::string& file_path) = 0;
 };
 }  // namespace storage
