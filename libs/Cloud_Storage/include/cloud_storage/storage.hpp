@@ -22,5 +22,12 @@ class Storage {
    */
   virtual bool Download(const std::string& cloud_file_path,
                         const std::string& file_path) = 0;
+
+  /**
+   * Set the configuration of the cloud storage service
+   * @param file_path the file from where it will get the configuration from
+   * @return if the configuration has been performed succesfully
+   */
+  virtual bool SetConfiguration(const std::string& file_path) = 0;
 };
 }  // namespace storage
