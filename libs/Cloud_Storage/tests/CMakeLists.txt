@@ -1,7 +1,7 @@
 set(TEST_NAME CloudStorageTest)
 project(${TEST_NAME})
 
-if (BUILD_TEST)
+if (${BUILD_TEST})
     include(FetchContent)
     FetchContent_Declare(
         googletest
@@ -12,7 +12,7 @@ if (BUILD_TEST)
 
     find_package(CURL REQUIRED)
 
-    add_executable(GoogleDriveTest upload.cpp)
+    add_executable(GoogleDriveTest google_drive.cpp)
     target_link_libraries(GoogleDriveTest gtest_main cloud_storage CURL::libcurl)
     gtest_discover_tests(GoogleDriveTest)
 endif()

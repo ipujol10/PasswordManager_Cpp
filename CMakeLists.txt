@@ -6,6 +6,8 @@ project(${PROJECT_NAME} VERSION 1.0)
 
 set(CMAKE_CXX_STANDARD 20)
 
+set(CMAKE_CXX_STANDARD 20)
+
 option(BUILD_TEST "Enable/Disable testing" ON)
 
 if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/external/fltk)
@@ -61,5 +63,5 @@ if(${BUILD_TEST})
   include(CTest)
   add_test(NAME SQLite3Test COMMAND SQLite3Test)
   add_test(NAME DatabaseTest COMMAND DatabaseTest)
-    add_test(NAME GoogleDriveTest COMMAND GoogleDriveTest)
+  add_test(NAME GoogleDriveTest COMMAND GoogleDriveTest)
 endif()

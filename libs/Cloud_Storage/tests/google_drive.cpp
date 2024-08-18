@@ -2,10 +2,11 @@
 #include <gtest/gtest.h>
 
 #include <cloud_storage/google_drive.hpp>
+#include <filesystem>
 
-TEST(GoogleDrive, UploadCorrect) {
+TEST(GoogleDrive, ConfigureCorrectly) {
   storage::GoogleDriveApi s;
   const std::string path = "";
 
-  EXPECT_TRUE(s.Upload(path));
+  EXPECT_TRUE(s.SetConfiguration(path));
 }
