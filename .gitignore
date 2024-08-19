@@ -41,3 +41,6 @@ build
 
 # External dependencies
 external
+
+# Test data
+libs/Cloud_Storage/tests/data/test_settings.db
