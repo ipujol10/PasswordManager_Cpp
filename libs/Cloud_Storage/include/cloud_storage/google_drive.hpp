@@ -4,13 +4,18 @@
 
 namespace storage {
 class GoogleDriveApi : public Storage {
+  std::string token_;
+  bool configured_;
+
  public:
+  GoogleDriveApi() noexcept;
+
   /**
    * Upload a file to Google Drive
    * @param file_path the path to the file to be uploaded
    * @return if the upload has been performed succesfully
    */
-  bool Upload(const std::string& file_path) override;
+  bool Upload(const std::string& file_path) const override;
 
   /**
    * Download a file into the current machine from Google Drive
@@ -19,13 +24,13 @@ class GoogleDriveApi : public Storage {
    * @return if the download has been perfomed succesfully
    */
   bool Download(const std::string& cloud_file_path,
-                const std::string& file_path) override;
+                const std::string& file_path) const override;
 
   /**
    * Set the configuration for Google Drive
    * @param file_path the file from where it will get the configuration from
    * @return if the configuration has been performed succesfully
    */
-  bool SetConfiguration(const std::string& file_path) override;
+  bool SetConfiguration(const std::string& file_path) noexcept override;
 };
 }  // namespace storage
