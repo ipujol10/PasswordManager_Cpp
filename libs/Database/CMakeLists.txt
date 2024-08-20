@@ -2,6 +2,12 @@ set(LIBRARY_NAME database)
 
 project(${LIBRARY_NAME})
 
+include(FetchContent)
+FetchContent_Declare(
+  googletest
+  URL https://github.com/google/googletest/archive/refs/tags/v1.14.0.zip)
+FetchContent_MakeAvailable(googletest)
+
 find_package(SQLite3 REQUIRED)
 
 set(SOURCE sqlite3.cpp)
@@ -27,4 +33,6 @@ target_include_directories(
   ${LIBRARY_NAME} PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
                          $<INSTALL_INTERFACE:include>)
 
-target_link_libraries(${LIBRARY_NAME} SQLite::SQLite3)
+target_link_libraries(${LIBRARY_NAME} SQLite::SQLite3 gtest_main)
+
+add_subdirectory(tests)
