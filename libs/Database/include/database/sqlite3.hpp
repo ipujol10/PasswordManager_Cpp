@@ -11,6 +11,16 @@ class SQLite3API : public Database {
   bool connected_;
   const std::string file_path_;
 
+  /**
+   * @brief Generate the query to SELECT data
+   * @param columns the columns from where to take the data - use * to get data from all
+   * columns
+   * @param table name of the table to get the data from
+   * @return the string to select the data
+   */
+  std::string GenerateQuery(const std::vector<std::string> &columns,
+                            const std::string &table) const noexcept;
+
  public:
   /**
    * @brief provide the path to the database file
@@ -30,6 +40,18 @@ class SQLite3API : public Database {
    */
   bool Disconnect() noexcept override;
 
+  /**
+   * @brief Obtain the data from the database
+   * @param columns the columns from where to take the data - use * to get data from all
+   * columns
+   * @param table name of the table to get the data from
+   * @return a list of rows where each row has the elements of the query
+   */
+  std::vector<std::vector<std::string>> Select(
+      const std::vector<std::string> &columns,
+      const std::string &table) const noexcept override;
+
   FRIEND_TEST(SQLite3Test, CreateDatabase);
+  FRIEND_TEST(SQLite3Test, GenerateQuery_GetData);
 };
 }  // namespace db
