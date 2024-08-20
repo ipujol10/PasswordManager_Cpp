@@ -2,10 +2,6 @@ project(cloud_storage)
 
 set(LIBRARY_NAME cloud_storage)
 
-set(FLTK_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../external/fltk/share/fltk)
-
-find_package(FLTK REQUIRED CONFIG)
-
 include(FetchContent)
 FetchContent_Declare(
   googletest
@@ -34,9 +30,5 @@ target_include_directories(
 target_include_directories(
   ${LIBRARY_NAME} PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
                          $<INSTALL_INTERFACE:include>)
-
-target_include_directories(${LIBRARY_NAME} PUBLIC ${FLTK_INCLUDE_DIRS})
-
-target_link_libraries(${LIBRARY_NAME} fltk gtest_main)
 
 add_subdirectory(tests)
