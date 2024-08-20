@@ -6,6 +6,8 @@ project(${PROJECT_NAME} VERSION 1.0)
 
 set(CMAKE_CXX_STANDARD 20)
 
+option(BUILD_TEST "Enable/Disable testing" ON)
+
 if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/external/fltk)
   message("Install FLTK...")
   message("Downloading FLTK..")
@@ -53,8 +55,6 @@ add_executable(${PROJECT_NAME} src/main.cpp)
 target_include_directories(${PROJECT_NAME} PUBLIC ${FLTK_INCLUDE_DIRS})
 
 target_link_libraries(${PROJECT_NAME} fltk)
-
-option(BUILD_TEST "Enable/Disable testing" ON)
 
 if(${BUILD_TEST})
   enable_testing()
