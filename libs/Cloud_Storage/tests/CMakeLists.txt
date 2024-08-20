@@ -15,6 +15,11 @@ if(${BUILD_TEST})
   target_link_libraries(GoogleDriveTest gtest_main cloud_storage CURL::libcurl)
   gtest_discover_tests(GoogleDriveTest)
 
-  file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/data/test_settings.db
-       DESTINATION ${CMAKE_BINARY_DIR}/libs/Cloud_Storage/tests/data/)
+  set(TEST_DATA_FILE ${CMAKE_CURRENT_SOURCE_DIR}/data/test_settings.db)
+  if(EXISTS "${TEST_DATA_FILE}")
+    file(COPY ${TEST_DATA_FILE}
+         DESTINATION ${CMAKE_BINARY_DIR}/libs/Cloud_Storage/tests/data/)
+  else()
+    message("test_settings.db file not found")
+  endif()
 endif()
