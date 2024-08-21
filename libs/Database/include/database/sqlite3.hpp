@@ -19,7 +19,7 @@ class SQLite3API : public Database {
    * @return the string to select the data
    */
   std::string GenerateQuery(const std::vector<std::string> &columns,
-                            const std::string &table) const noexcept;
+                            const std::string &table) noexcept;
 
  public:
   /**
@@ -49,7 +49,12 @@ class SQLite3API : public Database {
    */
   std::vector<std::vector<std::string>> Select(
       const std::vector<std::string> &columns,
-      const std::string &table) const noexcept override;
+      const std::string &table) noexcept override;
+
+  /**
+   * @brief Get the last error message
+   */
+  std::string GetError() const noexcept override;
 
   FRIEND_TEST(SQLite3Test, CreateDatabase);
   FRIEND_TEST(SQLite3Test, GenerateQuery_GetData);

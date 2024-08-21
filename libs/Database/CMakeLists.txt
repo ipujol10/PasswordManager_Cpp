@@ -10,7 +10,7 @@ FetchContent_MakeAvailable(googletest)
 
 find_package(SQLite3 REQUIRED)
 
-set(SOURCE sqlite3.cpp)
+set(SOURCE database.cpp sqlite3.cpp)
 foreach(item IN LISTS SOURCE)
   list(APPEND SOURCE src/${item})
   list(REMOVE_ITEM SOURCE ${item})

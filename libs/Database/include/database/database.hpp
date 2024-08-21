@@ -5,7 +5,12 @@
 
 namespace db {
 class Database {
+ protected:
+  std::string error_;
+
  public:
+  Database() noexcept;
+
   /**
    * @brief Connect to a database
    */
@@ -24,7 +29,11 @@ class Database {
    * @return a list of rows where each row has the elements of the query
    */
   virtual std::vector<std::vector<std::string>> Select(
-      const std::vector<std::string>& columns,
-      const std::string& table) const noexcept = 0;
+      const std::vector<std::string>& columns, const std::string& table) noexcept = 0;
+
+  /**
+   * @brief Get the last error message
+   */
+  virtual std::string GetError() const noexcept = 0;
 };
 }  // namespace db
