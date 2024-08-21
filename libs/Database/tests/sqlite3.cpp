@@ -11,7 +11,7 @@ TEST(SQLite3Test, CreateDatabase) {
 
   EXPECT_EQ(db.db_, nullptr);
   EXPECT_EQ(db.file_path_, file_path);
-  EXPECT_EQ(db.error_, "");
+  EXPECT_EQ(db.error_, ErrorStatus::Ok);
   EXPECT_FALSE(db.connected_);
 }
 
@@ -29,14 +29,14 @@ TEST(SQLite3Test, GenerateQuery_GetData) {
 
   EXPECT_EQ(db.GenerateQuery({"*", "test1"}, "table_test"), "")
       << "Failed on incorrect test 4";
-  EXPECT_EQ(db.GetError(), "* column with other names");
+  EXPECT_EQ(db.GetError(), db::ErrorStatus::NoWildcardAlone);
 
   EXPECT_EQ(db.GenerateQuery({"test1", "*"}, "table_test"), "")
       << "Failed on incorrect test 5";
-  EXPECT_EQ(db.GetError(), "* column with other names");
+  EXPECT_EQ(db.GetError(), db::ErrorStatus::NoWildcardAlone);
 
   EXPECT_EQ(db.GenerateQuery({"test1", "test2"}, ""), "") << "Failed on incorrect test 6";
-  EXPECT_EQ(db.GetError(), "No table name");
+  EXPECT_EQ(db.GetError(), db::ErrorStatus::NoTableName);
 }
 }  // namespace db
 
@@ -144,22 +144,22 @@ TEST(SQLite3Test, SelectData_bad) {
   db::SQLite3API db(file_path);
 
   EXPECT_EQ(db.Select({}, "").size(), 0) << "Database not connected";
-  EXPECT_EQ(db.GetError(), "Not connected");
+  EXPECT_EQ(db.GetError(), db::ErrorStatus::NotConnected);
 
   EXPECT_TRUE(db.Connect());
 
   EXPECT_EQ(db.Select({"id"}, "table1").size(), 0) << "With a bad column name";
-  EXPECT_EQ(db.GetError(), "Invalid column name");
+  EXPECT_EQ(db.GetError(), db::ErrorStatus::InvalidColumnName);
 
   EXPECT_EQ(db.Select({"id", "str", "num"}, "table1").size(), 0)
       << "With a bad column name";
-  EXPECT_EQ(db.GetError(), "Invalid column name");
+  EXPECT_EQ(db.GetError(), db::ErrorStatus::InvalidColumnName);
 
   EXPECT_EQ(db.Select({"ID"}, "tablet1").size(), 0) << "With bad table name";
-  EXPECT_EQ(db.GetError(), "Invalid table name");
+  EXPECT_EQ(db.GetError(), db::ErrorStatus::InvalidTableName);
 
   EXPECT_EQ(db.Select({}, "").size(), 0) << "With bad table name";
-  EXPECT_EQ(db.GetError(), "No table name");
+  EXPECT_EQ(db.GetError(), db::ErrorStatus::NoTableName);
 
   EXPECT_TRUE(db.Disconnect());
 }

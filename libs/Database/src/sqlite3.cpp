@@ -6,8 +6,8 @@ SQLite3API::SQLite3API(const std::string& file_path) noexcept
 
 bool SQLite3API::Connect() noexcept {
   int return_code = sqlite3_open(file_path_.c_str(), &db_);
-  if (!(connected_ = return_code == SQLITE_OK)) error_ = "Could not connect";
-  error_ = "";
+  if (!(connected_ = return_code == SQLITE_OK)) error_ = ErrorStatus::CouldNotConnect;
+  error_ = ErrorStatus::Ok;
   return connected_;
 }
 
@@ -16,17 +16,17 @@ bool SQLite3API::Disconnect() noexcept {
   if (return_code == SQLITE_OK) {
     connected_ = false;
     db_ = nullptr;
-    error_ = "";
+    error_ = ErrorStatus::Ok;
     return true;
   }
-  error_ = "Could not disconnect";
+  error_ = ErrorStatus::CouldNotDisconnect;
   return false;
 }
 
 std::vector<std::vector<std::string>> SQLite3API::Select(
     const std::vector<std::string>& columns, const std::string& table) noexcept {
   if (!connected_) {
-    error_ = "Not connected";
+    error_ = ErrorStatus::NotConnected;
     return {};
   }
   const auto query = GenerateQuery(columns, table);
@@ -36,7 +36,7 @@ std::vector<std::vector<std::string>> SQLite3API::Select(
   sqlite3_stmt* statement = nullptr;
   int return_code = sqlite3_prepare(db_, query.c_str(), -1, &statement, &error);
   if (return_code != SQLITE_OK) {
-    error_ = "Invalid column name";
+    error_ = ErrorStatus::InvalidTableName;
     return {};
   }
 
@@ -52,45 +52,45 @@ std::vector<std::vector<std::string>> SQLite3API::Select(
 
   switch (return_code) {
     case SQLITE_BUSY:
-      error_ = "Still busy";
+      error_ = ErrorStatus::QueryBusy;
       return {};
     case SQLITE_ERROR:
-      error_ = "Run-time error";
+      error_ = ErrorStatus::QueryRuntimeError;
       return {};
     case SQLITE_MISUSE:
-      error_ = "Query misused";
+      error_ = ErrorStatus::QueryMisused;
       return {};
     default:
       break;
   }
 
-  error_ = "";
+  error_ = ErrorStatus::Ok;
   return out;
 }
 
 std::string SQLite3API::GenerateQuery(const std::vector<std::string>& columns,
                                       const std::string& table) noexcept {
-  if (table.length() == 0) {
-    error_ = "No table name";
+  if (table.empty()) {
+    error_ = ErrorStatus::NoTableName;
     return {};
   }
   if (columns.size() == 0) {
-    error_ = "";
+    error_ = ErrorStatus::Ok;
     return "SELECT * FROM " + table + ";";
   }
   if (columns.back() == "*" && columns.size() != 1) {
-    error_ = "* column with other names";
+    error_ = ErrorStatus::NoWildcardAlone;
     return {};
   }
   std::string out = "SELECT ";
   for (int i = 0; i < columns.size() - 1; ++i) {
     if (columns[i] == "*") {
-      error_ = "* column with other names";
+      error_ = ErrorStatus::NoWildcardAlone;
       return {};
     }
     out += columns[i] + ", ";
   }
-  error_ = "";
+  error_ = ErrorStatus::Ok;
   return out + columns.back() + " FROM " + table + ";";
 }
 }  // namespace db
