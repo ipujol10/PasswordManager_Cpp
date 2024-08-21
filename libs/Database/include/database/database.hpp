@@ -6,6 +6,7 @@
 namespace db {
 class Database {
  protected:
+  bool connected_;
   std::string error_;
 
  public:
@@ -34,6 +35,11 @@ class Database {
   /**
    * @brief Get the last error message
    */
-  virtual std::string GetError() const noexcept = 0;
+  std::string GetError() const noexcept;
+
+  /**
+   * @brief Check if the dtatabase is connected
+   */
+  bool IsConnected() const noexcept;
 };
 }  // namespace db

@@ -2,11 +2,12 @@
 
 namespace db {
 SQLite3API::SQLite3API(const std::string& file_path) noexcept
-    : db_(nullptr), connected_(false), file_path_(std::move(file_path)) {}
+    : db_(nullptr), file_path_(std::move(file_path)) {}
 
 bool SQLite3API::Connect() noexcept {
   int return_code = sqlite3_open(file_path_.c_str(), &db_);
-  connected_ = return_code == SQLITE_OK;
+  if (!(connected_ = return_code == SQLITE_OK)) error_ = "Could not connect";
+  error_ = "";
   return connected_;
 }
 
@@ -15,8 +16,10 @@ bool SQLite3API::Disconnect() noexcept {
   if (return_code == SQLITE_OK) {
     connected_ = false;
     db_ = nullptr;
+    error_ = "";
     return true;
   }
+  error_ = "Could not disconnect";
   return false;
 }
 
@@ -33,11 +36,36 @@ std::vector<std::vector<std::string>> SQLite3API::Select(
   sqlite3_stmt* statement = nullptr;
   int return_code = sqlite3_prepare(db_, query.c_str(), -1, &statement, &error);
   if (return_code != SQLITE_OK) {
-    error_ = "Could not prepare";
+    error_ = "Invalid column name";
     return {};
   }
 
-  return {{"fail"}};
+  std::vector<std::vector<std::string>> out;
+  while ((return_code = sqlite3_step(statement)) == SQLITE_ROW) {
+    std::vector<std::string> row;
+    for (int i = 0; i < columns.size(); ++i) {
+      auto val = sqlite3_column_type(statement, i);
+      row.push_back(std::to_string(val));
+    }
+    out.push_back(row);
+  }
+
+  switch (return_code) {
+    case SQLITE_BUSY:
+      error_ = "Still busy";
+      return {};
+    case SQLITE_ERROR:
+      error_ = "Run-time error";
+      return {};
+    case SQLITE_MISUSE:
+      error_ = "Query misused";
+      return {};
+    default:
+      break;
+  }
+
+  error_ = "";
+  return out;
 }
 
 std::string SQLite3API::GenerateQuery(const std::vector<std::string>& columns,
@@ -46,7 +74,10 @@ std::string SQLite3API::GenerateQuery(const std::vector<std::string>& columns,
     error_ = "No table name";
     return {};
   }
-  if (columns.size() == 0) return "SELECT * FROM " + table + ";";
+  if (columns.size() == 0) {
+    error_ = "";
+    return "SELECT * FROM " + table + ";";
+  }
   if (columns.back() == "*" && columns.size() != 1) {
     error_ = "* column with other names";
     return {};
@@ -59,8 +90,7 @@ std::string SQLite3API::GenerateQuery(const std::vector<std::string>& columns,
     }
     out += columns[i] + ", ";
   }
+  error_ = "";
   return out + columns.back() + " FROM " + table + ";";
 }
-
-std::string SQLite3API::GetError() const noexcept { return error_; }
 }  // namespace db

@@ -45,7 +45,9 @@ TEST(SQLite3Test, ConnectExistingDatabase) {
   db::SQLite3API db(file_path);
 
   EXPECT_TRUE(std::filesystem::exists(file_path));
+  EXPECT_FALSE(db.IsConnected());
   EXPECT_TRUE(db.Connect());
+  EXPECT_TRUE(db.IsConnected());
 }
 
 TEST(SQLite3Test, ConnectNonExistingDatabase) {
@@ -53,7 +55,9 @@ TEST(SQLite3Test, ConnectNonExistingDatabase) {
   db::SQLite3API db(file_path);
 
   EXPECT_FALSE(std::filesystem::exists(file_path));
+  EXPECT_FALSE(db.IsConnected());
   EXPECT_TRUE(db.Connect());
+  EXPECT_TRUE(db.IsConnected());
   EXPECT_TRUE(std::filesystem::exists(file_path));
   std::filesystem::remove(file_path);
   EXPECT_FALSE(std::filesystem::exists(file_path));
@@ -64,8 +68,11 @@ TEST(SQLite3Test, DisconnectDatabase) {
   db::SQLite3API db(file_path);
 
   EXPECT_TRUE(std::filesystem::exists(file_path));
+  EXPECT_FALSE(db.IsConnected());
   EXPECT_TRUE(db.Connect());
+  EXPECT_TRUE(db.IsConnected());
   EXPECT_TRUE(db.Disconnect());
+  EXPECT_FALSE(db.IsConnected());
 }
 
 TEST(SQLite3Test, SelectData_table1_all) {

@@ -8,7 +8,6 @@
 namespace db {
 class SQLite3API : public Database {
   sqlite3 *db_;
-  bool connected_;
   const std::string file_path_;
 
   /**
@@ -50,11 +49,6 @@ class SQLite3API : public Database {
   std::vector<std::vector<std::string>> Select(
       const std::vector<std::string> &columns,
       const std::string &table) noexcept override;
-
-  /**
-   * @brief Get the last error message
-   */
-  std::string GetError() const noexcept override;
 
   FRIEND_TEST(SQLite3Test, CreateDatabase);
   FRIEND_TEST(SQLite3Test, GenerateQuery_GetData);
