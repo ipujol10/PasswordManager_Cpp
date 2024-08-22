@@ -49,6 +49,7 @@ std::vector<std::vector<std::string>> SQLite3API::Select(
     }
     out.push_back(row);
   }
+  sqlite3_finalize(statement);
 
   switch (return_code) {
     case SQLITE_BUSY:

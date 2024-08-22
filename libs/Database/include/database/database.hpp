@@ -18,6 +18,39 @@ enum ErrorStatus {
   NoWildcardAlone,
 };
 
+enum ColumnType {
+  Integer = 1,
+  Float,
+  Text,
+  Blob,
+  Null
+};
+
+struct ColumnData {
+  ColumnType type;
+  union {
+    int int_val;
+    float float_val;
+    const char* str_val;
+  } val;
+
+  ColumnData(int value) noexcept;
+
+  ColumnData(float value) noexcept;
+
+  ColumnData(const std::string& value) noexcept;
+
+  int ToInt() const noexcept;
+
+  bool ToBool() const noexcept;
+
+  float ToFloat() const noexcept;
+
+  std::string ToStr() const noexcept;
+
+  std::string GetString() const noexcept;
+};
+
 class Database {
  protected:
   bool connected_;

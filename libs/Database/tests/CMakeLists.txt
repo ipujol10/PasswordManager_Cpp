@@ -13,6 +13,10 @@ if(${BUILD_TEST})
   target_link_libraries(SQLite3Test gtest_main database)
   gtest_discover_tests(SQLite3Test)
 
+  add_executable(DatabaseTest database.cpp)
+  target_link_libraries(DatabaseTest gtest_main database)
+  gtest_discover_tests(DatabaseTest)
+
   set(TEST_FILES connect_existing.db test.db)
   foreach(item IN LISTS TEST_FILES)
     set(CURRENT_FILE ${CMAKE_CURRENT_SOURCE_DIR}/data/${item})
