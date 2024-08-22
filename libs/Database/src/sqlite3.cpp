@@ -23,7 +23,7 @@ bool SQLite3API::Disconnect() noexcept {
   return false;
 }
 
-std::vector<std::vector<std::string>> SQLite3API::Select(
+std::vector<std::vector<ColumnData>> SQLite3API::Select(
     const std::vector<std::string>& columns, const std::string& table) noexcept {
   if (!connected_) {
     error_ = ErrorStatus::NotConnected;
@@ -40,12 +40,26 @@ std::vector<std::vector<std::string>> SQLite3API::Select(
     return {};
   }
 
-  std::vector<std::vector<std::string>> out;
+  std::vector<std::vector<ColumnData>> out;
   while ((return_code = sqlite3_step(statement)) == SQLITE_ROW) {
-    std::vector<std::string> row;
-    for (int i = 0; i < columns.size(); ++i) {
-      auto val = sqlite3_column_type(statement, i);
-      row.push_back(std::to_string(val));
+    std::vector<ColumnData> row;
+    int num_columns = (columns.size() == 0 || columns.front() == "*")
+                          ? sqlite3_column_count(statement)
+                          : columns.size();
+    for (int i = 0; i < num_columns; ++i) {
+      int value_type = sqlite3_column_type(statement, i);
+      switch (value_type) {
+        case ColumnType::Integer:
+          row.emplace_back(sqlite3_column_int(statement, i));
+          break;
+        case ColumnType::Double:
+          row.emplace_back(sqlite3_column_double(statement, i));
+        case ColumnType::Text:
+          row.emplace_back(sqlite3_column_text(statement, i));
+        default:
+          row.emplace_back();
+          break;
+      }
     }
     out.push_back(row);
   }

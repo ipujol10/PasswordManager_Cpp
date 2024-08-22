@@ -26,9 +26,9 @@ TEST(DatabaseTest, ColumnData_Bool) {
 }
 
 TEST(DatabaseTest, ColumnData_Float) {
-  db::ColumnData data(3.1415f);
+  db::ColumnData data(3.1415);
 
-  EXPECT_NEAR(data.ToFloat(), 3.1415, 0.0001);
+  EXPECT_NEAR(data.ToDouble(), 3.1415, 0.0001);
   EXPECT_EQ(data.GetString(), "3.141500");
 }
 

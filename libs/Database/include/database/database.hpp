@@ -20,7 +20,7 @@ enum ErrorStatus {
 
 enum ColumnType {
   Integer = 1,
-  Float,
+  Double,
   Text,
   Blob,
   Null
@@ -30,25 +30,31 @@ struct ColumnData {
   ColumnType type;
   union {
     int int_val;
-    float float_val;
+    double double_val;
     const char* str_val;
   } val;
 
+  ColumnData() noexcept;
+
   ColumnData(int value) noexcept;
 
-  ColumnData(float value) noexcept;
+  ColumnData(double value) noexcept;
 
   ColumnData(const std::string& value) noexcept;
+
+  ColumnData(const unsigned char* value) noexcept;
 
   int ToInt() const noexcept;
 
   bool ToBool() const noexcept;
 
-  float ToFloat() const noexcept;
+  double ToDouble() const noexcept;
 
   std::string ToStr() const noexcept;
 
   std::string GetString() const noexcept;
+
+  bool operator==(const ColumnData& other) const noexcept;
 };
 
 class Database {
@@ -76,7 +82,7 @@ class Database {
    * @param table name of the table to get the data from
    * @return a list of rows where each row has the elements of the query
    */
-  virtual std::vector<std::vector<std::string>> Select(
+  virtual std::vector<std::vector<ColumnData>> Select(
       const std::vector<std::string>& columns, const std::string& table) noexcept = 0;
 
   /**

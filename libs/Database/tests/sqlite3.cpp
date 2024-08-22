@@ -80,9 +80,9 @@ TEST(SQLite3Test, SelectData_table1_all) {
   db::SQLite3API db(file_path);
   EXPECT_TRUE(db.Connect());
 
-  std::vector<std::vector<std::string>> compare_table_1 = {
-      {"1", "Test1", "3.1415"},
-      {"2", "false",      "0"}
+  std::vector<std::vector<db::ColumnData>> compare_table_1 = {
+      {db::ColumnData(1), db::ColumnData("Test1"), db::ColumnData(3.1415)},
+      {db::ColumnData(2), db::ColumnData("false"),    db::ColumnData(0.0)}
   };
   auto result_table_1 = db.Select({"ID", "str", "num"}, "table1");
   auto result_table_1_2 = db.Select({}, "table1");
@@ -107,7 +107,8 @@ TEST(SQLite3Test, SelectData_table1_num) {
   db::SQLite3API db(file_path);
   EXPECT_TRUE(db.Connect());
 
-  std::vector<std::vector<std::string>> compare_table_1 = {{"3.1415"}, {"0"}};
+  std::vector<std::vector<db::ColumnData>> compare_table_1 = {{db::ColumnData(3.1415)},
+                                                              {db::ColumnData(0.0)}};
   auto result_table_1 = db.Select({"num"}, "table1");
   ASSERT_NE(result_table_1.size(), 0) << "Result empty";
   ASSERT_NE(result_table_1.front().size(), 0) << "Row empty";
@@ -126,7 +127,7 @@ TEST(SQLite3Test, SelectData_table2_all) {
   db::SQLite3API db(file_path);
   EXPECT_TRUE(db.Connect());
 
-  std::vector<std::vector<std::string>> compare_table_2 = {{"1"}};
+  std::vector<std::vector<db::ColumnData>> compare_table_2 = {{db::ColumnData(1.0)}};
   auto result_table_2 = db.Select({"test"}, "tabe2");
   ASSERT_NE(result_table_2.size(), 0) << "Result empty";
   ASSERT_NE(result_table_2.front().size(), 0) << "Row empty";

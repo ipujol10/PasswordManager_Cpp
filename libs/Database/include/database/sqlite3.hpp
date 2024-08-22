@@ -46,9 +46,8 @@ class SQLite3API : public Database {
    * @param table name of the table to get the data from
    * @return a list of rows where each row has the elements of the query
    */
-  std::vector<std::vector<std::string>> Select(
-      const std::vector<std::string> &columns,
-      const std::string &table) noexcept override;
+  std::vector<std::vector<ColumnData>> Select(const std::vector<std::string> &columns,
+                                              const std::string &table) noexcept override;
 
   FRIEND_TEST(SQLite3Test, CreateDatabase);
   FRIEND_TEST(SQLite3Test, GenerateQuery_GetData);
