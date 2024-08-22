@@ -54,7 +54,7 @@ bool ColumnData::operator==(const ColumnData& other) const noexcept {
     case ColumnType::Double:
       return abs(val.double_val - other.val.double_val) < 1e-6;
     case ColumnType::Text:
-      return val.str_val == other.val.str_val;
+      return ToStr() == other.ToStr();
     default:
       return true;
   }

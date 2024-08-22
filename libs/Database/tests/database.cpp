@@ -7,6 +7,7 @@ TEST(DatabaseTest, ColumnData_Int) {
 
   EXPECT_EQ(data.ToInt(), 2);
   EXPECT_EQ(data.GetString(), "2");
+  EXPECT_EQ(db::ColumnData(2), db::ColumnData(2));
 }
 
 TEST(DatabaseTest, ColumnData_Bool) {
@@ -30,6 +31,7 @@ TEST(DatabaseTest, ColumnData_Float) {
 
   EXPECT_NEAR(data.ToDouble(), 3.1415, 0.0001);
   EXPECT_EQ(data.GetString(), "3.141500");
+  EXPECT_EQ(db::ColumnData(1.1), db::ColumnData(1.1));
 }
 
 TEST(DatabaseTest, ColumnData_String) {
@@ -37,4 +39,5 @@ TEST(DatabaseTest, ColumnData_String) {
 
   EXPECT_EQ(data.ToStr(), "Test");
   EXPECT_EQ(data.GetString(), "Test");
+  EXPECT_EQ(db::ColumnData("Ab"), db::ColumnData("Ab"));
 }
