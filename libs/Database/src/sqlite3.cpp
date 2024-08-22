@@ -36,7 +36,7 @@ std::vector<std::vector<ColumnData>> SQLite3API::Select(
   sqlite3_stmt* statement = nullptr;
   int return_code = sqlite3_prepare(db_, query.c_str(), -1, &statement, &error);
   if (return_code != SQLITE_OK) {
-    error_ = ErrorStatus::InvalidTableName;
+    error_ = ErrorStatus::InvalidColumnTableName;
     return {};
   }
 
@@ -54,8 +54,10 @@ std::vector<std::vector<ColumnData>> SQLite3API::Select(
           break;
         case ColumnType::Double:
           row.emplace_back(sqlite3_column_double(statement, i));
+          break;
         case ColumnType::Text:
           row.emplace_back(sqlite3_column_text(statement, i));
+          break;
         default:
           row.emplace_back();
           break;

@@ -9,8 +9,7 @@ enum ErrorStatus {
   CouldNotConnect,
   CouldNotDisconnect,
   NotConnected,
-  InvalidColumnName,
-  InvalidTableName,
+  InvalidColumnTableName,
   QueryBusy,
   QueryRuntimeError,
   QueryMisused,
@@ -36,13 +35,13 @@ struct ColumnData {
 
   ColumnData() noexcept;
 
-  ColumnData(int value) noexcept;
+  explicit ColumnData(int value) noexcept;
 
-  ColumnData(double value) noexcept;
+  explicit ColumnData(double value) noexcept;
 
-  ColumnData(const std::string& value) noexcept;
+  explicit ColumnData(const std::string& value) noexcept;
 
-  ColumnData(const unsigned char* value) noexcept;
+  explicit ColumnData(const unsigned char* value) noexcept;
 
   int ToInt() const noexcept;
 

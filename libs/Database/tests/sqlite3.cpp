@@ -5,7 +5,7 @@
 
 // Friend tests
 namespace db {
-TEST(SQLite3Test, CreateDatabase) {
+TEST(SQLite3Test_Create, Normal) {
   const std::string file_path = "test.db";
   SQLite3API db(file_path);
 
@@ -15,7 +15,7 @@ TEST(SQLite3Test, CreateDatabase) {
   EXPECT_FALSE(db.connected_);
 }
 
-TEST(SQLite3Test, GenerateQuery_GetData) {
+TEST(SQLite3Test_GenerateQuery, GetData) {
   SQLite3API db("test.db");
   EXPECT_EQ(db.GenerateQuery({"test1", "test2"}, "table_test"),
             "SELECT test1, test2 FROM table_test;")
@@ -40,7 +40,7 @@ TEST(SQLite3Test, GenerateQuery_GetData) {
 }
 }  // namespace db
 
-TEST(SQLite3Test, ConnectExistingDatabase) {
+TEST(SQLite3Test_Connect, ExistingDatabase) {
   const std::string file_path = "libs/Database/tests/data/connect_existing.db";
   db::SQLite3API db(file_path);
 
@@ -50,7 +50,7 @@ TEST(SQLite3Test, ConnectExistingDatabase) {
   EXPECT_TRUE(db.IsConnected());
 }
 
-TEST(SQLite3Test, ConnectNonExistingDatabase) {
+TEST(SQLite3Test_Connect, NonExistingDatabase) {
   const std::string file_path = "libs/Database/tests/data/connect_not_existing.db";
   db::SQLite3API db(file_path);
 
@@ -63,7 +63,7 @@ TEST(SQLite3Test, ConnectNonExistingDatabase) {
   EXPECT_FALSE(std::filesystem::exists(file_path));
 }
 
-TEST(SQLite3Test, DisconnectDatabase) {
+TEST(SQLite3Test_Connect, Disconnect) {
   const std::string file_path = "libs/Database/tests/data/connect_existing.db";
   db::SQLite3API db(file_path);
 
@@ -75,7 +75,7 @@ TEST(SQLite3Test, DisconnectDatabase) {
   EXPECT_FALSE(db.IsConnected());
 }
 
-TEST(SQLite3Test, SelectData_table1_all) {
+TEST(SQLite3Test_Select, Table1_all) {
   const std::string file_path = "libs/Database/tests/data/test.db";
   db::SQLite3API db(file_path);
   EXPECT_TRUE(db.Connect());
@@ -102,7 +102,7 @@ TEST(SQLite3Test, SelectData_table1_all) {
   EXPECT_TRUE(db.Disconnect());
 }
 
-TEST(SQLite3Test, SelectData_table1_num) {
+TEST(SQLite3Test_Select, Table1_num) {
   const std::string file_path = "libs/Database/tests/data/test.db";
   db::SQLite3API db(file_path);
   EXPECT_TRUE(db.Connect());
@@ -122,13 +122,13 @@ TEST(SQLite3Test, SelectData_table1_num) {
   EXPECT_TRUE(db.Disconnect());
 }
 
-TEST(SQLite3Test, SelectData_table2_all) {
+TEST(SQLite3Test_Select, Table2_all) {
   const std::string file_path = "libs/Database/tests/data/test.db";
   db::SQLite3API db(file_path);
   EXPECT_TRUE(db.Connect());
 
-  std::vector<std::vector<db::ColumnData>> compare_table_2 = {{db::ColumnData(1.0)}};
-  auto result_table_2 = db.Select({"test"}, "tabe2");
+  std::vector<std::vector<db::ColumnData>> compare_table_2 = {{db::ColumnData(1)}};
+  auto result_table_2 = db.Select({"test"}, "table2");
   ASSERT_NE(result_table_2.size(), 0) << "Result empty";
   ASSERT_NE(result_table_2.front().size(), 0) << "Row empty";
   for (int i = 0; i < result_table_2.size(); ++i) {
@@ -140,7 +140,7 @@ TEST(SQLite3Test, SelectData_table2_all) {
   EXPECT_TRUE(db.Disconnect());
 }
 
-TEST(SQLite3Test, SelectData_bad) {
+TEST(SQLite3Test_Select, Bad) {
   const std::string file_path = "libs/Database/tests/data/test.db";
   db::SQLite3API db(file_path);
 
@@ -149,15 +149,15 @@ TEST(SQLite3Test, SelectData_bad) {
 
   EXPECT_TRUE(db.Connect());
 
-  EXPECT_EQ(db.Select({"id"}, "table1").size(), 0) << "With a bad column name";
-  EXPECT_EQ(db.GetError(), db::ErrorStatus::InvalidColumnName);
+  EXPECT_EQ(db.Select({"ids"}, "table1").size(), 0) << "With a bad column name";
+  EXPECT_EQ(db.GetError(), db::ErrorStatus::InvalidColumnTableName);
 
-  EXPECT_EQ(db.Select({"id", "str", "num"}, "table1").size(), 0)
+  EXPECT_EQ(db.Select({"ids", "str", "num"}, "table1").size(), 0)
       << "With a bad column name";
-  EXPECT_EQ(db.GetError(), db::ErrorStatus::InvalidColumnName);
+  EXPECT_EQ(db.GetError(), db::ErrorStatus::InvalidColumnTableName);
 
   EXPECT_EQ(db.Select({"ID"}, "tablet1").size(), 0) << "With bad table name";
-  EXPECT_EQ(db.GetError(), db::ErrorStatus::InvalidTableName);
+  EXPECT_EQ(db.GetError(), db::ErrorStatus::InvalidColumnTableName);
 
   EXPECT_EQ(db.Select({}, "").size(), 0) << "With bad table name";
   EXPECT_EQ(db.GetError(), db::ErrorStatus::NoTableName);

@@ -49,7 +49,7 @@ class SQLite3API : public Database {
   std::vector<std::vector<ColumnData>> Select(const std::vector<std::string> &columns,
                                               const std::string &table) noexcept override;
 
-  FRIEND_TEST(SQLite3Test, CreateDatabase);
-  FRIEND_TEST(SQLite3Test, GenerateQuery_GetData);
+  FRIEND_TEST(SQLite3Test_Create, Normal);
+  FRIEND_TEST(SQLite3Test_GenerateQuery, GetData);
 };
 }  // namespace db
