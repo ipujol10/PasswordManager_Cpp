@@ -1,8 +1,41 @@
 #include "database/sqlite3.hpp"
 
 namespace db {
-SQLite3API::SQLite3API(const std::string& file_path) noexcept
-    : db_(nullptr), file_path_(std::move(file_path)) {}
+SQLite3API::SQLite3API(
+    const std::string& file_path,
+    const std::vector<
+        std::pair<std::string, std::vector<std::pair<std::string, ColumnType>>>>&
+        tables) noexcept
+    : db_(nullptr),
+      file_path_(std::move(file_path)),
+      tables_(GenerateTables(tables)),
+      columns_(GenerateColumns(tables)) {}
+
+std::map<std::string, std::vector<ColumnType>> db::SQLite3API::GenerateColumns(
+    const std::vector<
+        std::pair<std::string, std::vector<std::pair<std::string, ColumnType>>>>& tables)
+    const noexcept {
+  std::map<std::string, std::vector<ColumnType>> out;
+  for (const auto& [table, columns_type] : tables) {
+    std::vector<ColumnType> list;
+    for (const auto& [column, type] : columns_type) { list.push_back(type); }
+    out[table] = list;
+  }
+  return out;
+}
+
+std::map<std::string, std::map<std::string, ColumnType>> db::SQLite3API::GenerateTables(
+    const std::vector<
+        std::pair<std::string, std::vector<std::pair<std::string, ColumnType>>>>& tables)
+    const noexcept {
+  std::map<std::string, std::map<std::string, ColumnType>> out;
+  for (const auto& [table, columns_type] : tables) {
+    std::map<std::string, ColumnType> map;
+    for (const auto& [column, type] : columns_type) { map[column] = type; }
+    out[table] = map;
+  }
+  return out;
+}
 
 bool SQLite3API::Connect() noexcept {
   int return_code = sqlite3_open(file_path_.c_str(), &db_);
@@ -29,6 +62,9 @@ std::vector<std::vector<ColumnData>> SQLite3API::Select(
     error_ = ErrorStatus::NotConnected;
     return {};
   }
+
+  if (!IsValidQuery(columns, table)) return {};
+
   const auto query = GenerateQuery(columns, table);
   if (query.empty()) return {};
 
@@ -36,31 +72,21 @@ std::vector<std::vector<ColumnData>> SQLite3API::Select(
   sqlite3_stmt* statement = nullptr;
   int return_code = sqlite3_prepare(db_, query.c_str(), -1, &statement, &error);
   if (return_code != SQLITE_OK) {
-    error_ = ErrorStatus::InvalidColumnTableName;
+    error_ = ErrorStatus::CouldNotPrepare;
     return {};
   }
 
+  const auto current_table = tables_.at(table);
   std::vector<std::vector<ColumnData>> out;
   while ((return_code = sqlite3_step(statement)) == SQLITE_ROW) {
     std::vector<ColumnData> row;
-    int num_columns = (columns.size() == 0 || columns.front() == "*")
-                          ? sqlite3_column_count(statement)
-                          : columns.size();
-    for (int i = 0; i < num_columns; ++i) {
-      int value_type = sqlite3_column_type(statement, i);
-      switch (value_type) {
-        case ColumnType::Integer:
-          row.emplace_back(sqlite3_column_int(statement, i));
-          break;
-        case ColumnType::Double:
-          row.emplace_back(sqlite3_column_double(statement, i));
-          break;
-        case ColumnType::Text:
-          row.emplace_back(sqlite3_column_text(statement, i));
-          break;
-        default:
-          row.emplace_back();
-          break;
+    if (columns.size() == 0 || columns.front() == "*") {
+      for (int i = 0; i < columns_.at(table).size(); ++i) {
+        row.push_back(GetColumnDataIdx(statement, i, columns_.at(table)[i]));
+      }
+    } else {
+      for (int i = 0; i < columns.size(); ++i) {
+        row.push_back(GetColumnDataIdx(statement, i, current_table.at(columns[i])));
       }
     }
     out.push_back(row);
@@ -88,7 +114,7 @@ std::vector<std::vector<ColumnData>> SQLite3API::Select(
 std::string SQLite3API::GenerateQuery(const std::vector<std::string>& columns,
                                       const std::string& table) noexcept {
   if (table.empty()) {
-    error_ = ErrorStatus::NoTableName;
+    error_ = ErrorStatus::InvalidTableName;
     return {};
   }
   if (columns.size() == 0) {
@@ -109,5 +135,46 @@ std::string SQLite3API::GenerateQuery(const std::vector<std::string>& columns,
   }
   error_ = ErrorStatus::Ok;
   return out + columns.back() + " FROM " + table + ";";
+}
+
+bool db::SQLite3API::IsValidQuery(const std::vector<std::string>& columns,
+                                  const std::string& table) noexcept {
+  if (!tables_.contains(table)) {
+    error_ = ErrorStatus::InvalidTableName;
+    return false;
+  }
+
+  if (columns.size() == 0 || (columns.size() == 1 && columns.front() == "*")) {
+    error_ = ErrorStatus::Ok;
+    return true;
+  }
+
+  const auto current = tables_.at(table);
+  for (const auto& column : columns) {
+    if (column == "*") {
+      error_ = ErrorStatus::NoWildcardAlone;
+      return false;
+    }
+    if (!current.contains(column)) {
+      error_ = ErrorStatus::InvalidColumnName;
+      return false;
+    }
+  }
+  error_ = ErrorStatus::Ok;
+  return true;
+}
+
+ColumnData db::SQLite3API::GetColumnDataIdx(sqlite3_stmt* statement, int idx,
+                                            const ColumnType& type) const noexcept {
+  switch (type) {
+    case ColumnType::Integer:
+      return ColumnData{sqlite3_column_int(statement, idx)};
+    case ColumnType::Double:
+      return ColumnData{sqlite3_column_double(statement, idx)};
+    case ColumnType::Text:
+      return ColumnData{sqlite3_column_text(statement, idx)};
+    default:
+      return {};
+  }
 }
 }  // namespace db

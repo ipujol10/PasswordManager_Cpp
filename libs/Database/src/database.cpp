@@ -1,5 +1,7 @@
 #include "database/database.hpp"
 
+#include <cstring>
+
 namespace db {
 Database::Database() noexcept : connected_(false), error_(ErrorStatus::Ok) {}
 
@@ -7,23 +9,21 @@ ErrorStatus Database::GetError() const noexcept { return error_; }
 
 bool Database::IsConnected() const noexcept { return connected_; }
 
-ColumnData::ColumnData() noexcept : type(ColumnType::Null) {}
+ColumnData::ColumnData() noexcept : type(ColumnType::Null), str_val() {}
 
-ColumnData::ColumnData(int value) noexcept : type(ColumnType::Integer) {
+ColumnData::ColumnData(int value) noexcept : type(ColumnType::Integer), str_val() {
   val.int_val = value;
 }
 
-ColumnData::ColumnData(double value) noexcept : type(ColumnType::Double) {
+ColumnData::ColumnData(double value) noexcept : type(ColumnType::Double), str_val() {
   val.double_val = value;
 }
 
-ColumnData::ColumnData(const std::string& value) noexcept : type(ColumnType::Text) {
-  val.str_val = value.c_str();
-}
+ColumnData::ColumnData(const std::string& value) noexcept
+    : type(ColumnType::Text), str_val(std::move(value)) {}
 
-ColumnData::ColumnData(const unsigned char* value) noexcept : type(ColumnType::Text) {
-  val.str_val = reinterpret_cast<const char*>(value);
-}
+ColumnData::ColumnData(const unsigned char* value) noexcept
+    : type(ColumnType::Text), str_val(reinterpret_cast<const char*>(value)) {}
 
 int ColumnData::ToInt() const noexcept { return val.int_val; }
 
@@ -31,7 +31,7 @@ bool ColumnData::ToBool() const noexcept { return static_cast<bool>(val.int_val)
 
 double ColumnData::ToDouble() const noexcept { return val.double_val; }
 
-std::string ColumnData::ToStr() const noexcept { return {val.str_val}; }
+std::string ColumnData::ToStr() const noexcept { return str_val; }
 
 std::string ColumnData::GetString() const noexcept {
   switch (type) {
@@ -40,7 +40,7 @@ std::string ColumnData::GetString() const noexcept {
     case ColumnType::Double:
       return std::to_string(val.double_val);
     case ColumnType::Text:
-      return {val.str_val};
+      return str_val;
     default:
       return "Unkown";
   }

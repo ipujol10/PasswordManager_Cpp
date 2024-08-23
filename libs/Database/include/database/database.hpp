@@ -9,19 +9,19 @@ enum ErrorStatus {
   CouldNotConnect,
   CouldNotDisconnect,
   NotConnected,
-  InvalidColumnTableName,
+  InvalidColumnName,
+  InvalidTableName,
+  CouldNotPrepare,
   QueryBusy,
   QueryRuntimeError,
   QueryMisused,
-  NoTableName,
   NoWildcardAlone,
 };
 
 enum ColumnType {
-  Integer = 1,
+  Integer = 0,
   Double,
   Text,
-  Blob,
   Null
 };
 
@@ -30,25 +30,18 @@ struct ColumnData {
   union {
     int int_val;
     double double_val;
-    const char* str_val;
   } val;
+  const std::string str_val;
 
   ColumnData() noexcept;
-
   explicit ColumnData(int value) noexcept;
-
   explicit ColumnData(double value) noexcept;
-
   explicit ColumnData(const std::string& value) noexcept;
-
   explicit ColumnData(const unsigned char* value) noexcept;
 
   int ToInt() const noexcept;
-
   bool ToBool() const noexcept;
-
   double ToDouble() const noexcept;
-
   std::string ToStr() const noexcept;
 
   std::string GetString() const noexcept;
