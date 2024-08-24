@@ -21,6 +21,7 @@ foreach(item IN LISTS HEADER)
 endforeach()
 
 add_library(${LIBRARY_NAME} STATIC ${SOURCE} ${HEADER})
+target_link_libraries(${LIBRARY_NAME} database)
 
 target_include_directories(
   ${LIBRARY_NAME}

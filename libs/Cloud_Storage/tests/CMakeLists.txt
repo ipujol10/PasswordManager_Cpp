@@ -20,7 +20,7 @@ if(${BUILD_TEST})
     set(CURRENT_FILE ${CMAKE_CURRENT_SOURCE_DIR}/data/${item})
     if(EXISTS ${CURRENT_FILE})
       file(COPY ${CURRENT_FILE}
-           DESTINATION ${CMAKE_BINARY_DIR}/libs/Cloud_Storage/data)
+           DESTINATION ${CMAKE_BINARY_DIR}/libs/Cloud_Storage/tests/data)
     else()
       message("${item} file not found")
     endif()

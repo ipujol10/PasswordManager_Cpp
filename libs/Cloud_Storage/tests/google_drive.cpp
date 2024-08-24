@@ -8,6 +8,5 @@ TEST(GoogleDrive, ConfigureCorrectly) {
   storage::GoogleDriveApi s;
   const std::string path = "libs/Cloud_Storage/tests/data/test_settings.db";
 
-  EXPECT_EQ(path, "Not implemented yet");
   EXPECT_TRUE(s.SetConfiguration(path));
 }
