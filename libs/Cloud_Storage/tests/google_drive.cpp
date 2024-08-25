@@ -8,5 +8,6 @@ TEST(GoogleDrive, ConfigureCorrectly) {
   storage::GoogleDriveApi s;
   const std::string path = "libs/Cloud_Storage/tests/data/test_settings.db";
 
-  EXPECT_TRUE(s.SetConfiguration(path));
+  EXPECT_TRUE(std::filesystem::exists(path)) << "Settings file not found";
+  EXPECT_TRUE(s.SetConfiguration(path)) << "Could not configure";
 }
