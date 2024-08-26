@@ -8,6 +8,8 @@ FetchContent_Declare(
   URL https://github.com/google/googletest/archive/refs/tags/v1.14.0.zip)
 FetchContent_MakeAvailable(googletest)
 
+find_package(CURL REQUIRED)
+
 set(SOURCE google_drive.cpp)
 foreach(item IN LISTS SOURCE)
   list(APPEND SOURCE src/${item})
@@ -21,7 +23,7 @@ foreach(item IN LISTS HEADER)
 endforeach()
 
 add_library(${LIBRARY_NAME} STATIC ${SOURCE} ${HEADER})
-target_link_libraries(${LIBRARY_NAME} database)
+target_link_libraries(${LIBRARY_NAME} database CURL::libcurl)
 
 target_include_directories(
   ${LIBRARY_NAME}

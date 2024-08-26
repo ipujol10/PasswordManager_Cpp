@@ -9,10 +9,8 @@ if(${BUILD_TEST})
   FetchContent_MakeAvailable(googletest)
   include(GoogleTest)
 
-  find_package(CURL REQUIRED)
-
   add_executable(GoogleDriveTest google_drive.cpp)
-  target_link_libraries(GoogleDriveTest gtest_main cloud_storage CURL::libcurl)
+  target_link_libraries(GoogleDriveTest gtest_main cloud_storage)
   gtest_discover_tests(GoogleDriveTest)
 
   set(TEST_FILES test_settings.db)
