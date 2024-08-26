@@ -7,6 +7,18 @@ class GoogleDriveApi : public Storage {
   std::string token_;
   bool configured_;
 
+  /**
+   * @brief Generate the URL of the file to be donwloaded
+   * @param file_id the file at Google Drive
+   * @param access_token the token for your Google Drive
+   * @return the URL used to download the file
+   */
+  std::string GetFileUrlDownload(const std::string& file_id,
+                                 const std::string& access_token) const noexcept;
+
+  static size_t WriteMemoryCallback(void* contents, size_t size, size_t nmemb,
+                                    std::string* data) noexcept;
+
  public:
   GoogleDriveApi() noexcept;
 
