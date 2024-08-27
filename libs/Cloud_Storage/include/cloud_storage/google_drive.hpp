@@ -16,6 +16,9 @@ class GoogleDriveApi : public Storage {
   std::string GetFileUrlDownload(const std::string& file_id,
                                  const std::string& access_token) const noexcept;
 
+  /**
+   * @brief Write the constents of the received call
+   */
   static size_t WriteMemoryCallback(void* contents, size_t size, size_t nmemb,
                                     std::string* data) noexcept;
 
