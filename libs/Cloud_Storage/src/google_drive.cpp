@@ -77,9 +77,9 @@ std::string storage::GoogleDriveApi::GetFileUrlDownload(
 }
 
 size_t storage::GoogleDriveApi::WriteMemoryCallback(void* contents, size_t size,
-                                                    size_t nmemb,
+                                                    size_t n_memb,
                                                     std::string* data) noexcept {
-  data->append(static_cast<char*>(contents), size * nmemb);
-  return size * nmemb;
+  data->append(static_cast<char*>(contents), size * n_memb);
+  return size * n_memb;
 }
 }  // namespace storage

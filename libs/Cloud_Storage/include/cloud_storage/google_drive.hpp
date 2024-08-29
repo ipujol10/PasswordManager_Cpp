@@ -18,8 +18,13 @@ class GoogleDriveApi : public Storage {
 
   /**
    * @brief Write the constents of the received call
+   * @param contents the data obtained from the CURL operation
+   * @param size the size of the packets of the contents
+   * @param n_memb number of packets
+   * @param data data where to write the contents received
+   * @return the total size obtained
    */
-  static size_t WriteMemoryCallback(void* contents, size_t size, size_t nmemb,
+  static size_t WriteMemoryCallback(void* contents, size_t size, size_t n_memb,
                                     std::string* data) noexcept;
 
  public:
