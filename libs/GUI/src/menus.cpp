@@ -1,17 +1,24 @@
 #include "menus.hpp"
 
+#include <FL/Enumerations.H>
+#include <FL/Fl_Menu_Bar.H>
+#include <FL/Fl_Menu_Item.H>
+#include <FL/Fl_Widget.H>
+
+#include "windows.hpp"
+
 namespace menu {
 Fl_Menu_Bar *menu(int w, int h, const window::MainWindow *window) {
-  Fl_Menu_Item menuItems[] = {
-      {"&Help", FL_ALT + 'h', (Fl_Callback *)help_cb, (void *)window},
-      {      0             }
+  Fl_Menu_Item menu_items[] = {
+      {"&Help", FL_ALT + 'h', (Fl_Callback *)helpCb, (void *)window},
+      {nullptr}
   };
-  Fl_Menu_Bar *m = new Fl_Menu_Bar(0, 0, w, h);
-  m->copy(menuItems);
+  auto *m = new Fl_Menu_Bar(0, 0, w, h);
+  m->copy(menu_items);
   return m;
 }
 
-void help_cb(Fl_Widget *w, void *v) {
+void helpCb(Fl_Widget *w, void *v) {
   auto *window = static_cast<window::MainWindow *>(v);
   window->help->show();
 }

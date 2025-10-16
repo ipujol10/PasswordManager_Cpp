@@ -41,3 +41,6 @@ build
 
 # External dependencies
 external
+
+# Venv
+venv

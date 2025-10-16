@@ -1,6 +1,9 @@
 #include "database/database.hpp"
 
+#include <cstdlib>
 #include <cstring>
+#include <string>
+#include <utility>
 
 namespace db {
 Database::Database() noexcept : connected_(false), error_(ErrorStatus::Ok) {}
@@ -52,7 +55,7 @@ bool ColumnData::operator==(const ColumnData& other) const noexcept {
     case ColumnType::Integer:
       return val.int_val == other.val.int_val;
     case ColumnType::Double:
-      return abs(val.double_val - other.val.double_val) < 1e-6;
+      return std::abs(val.double_val - other.val.double_val) < 1e-6;
     case ColumnType::Text:
       return ToStr() == other.ToStr();
     default:
