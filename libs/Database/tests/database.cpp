@@ -3,7 +3,7 @@
 #include <database/database.hpp>
 
 TEST(DatabaseTest, ColumnData_Int) {
-  db::ColumnData data(2);
+  const db::ColumnData data(2);
 
   EXPECT_EQ(data.ToInt(), 2);
   EXPECT_EQ(data.GetString(), "2");
@@ -11,7 +11,7 @@ TEST(DatabaseTest, ColumnData_Int) {
 }
 
 TEST(DatabaseTest, ColumnData_Bool) {
-  db::ColumnData data0(0), data1(1), data2(2), data3(-1);
+  const db::ColumnData data0(0), data1(1), data2(2), data3(-1);
 
   EXPECT_FALSE(data0.ToBool());
   EXPECT_EQ(data0.GetString(), "0");
@@ -27,7 +27,7 @@ TEST(DatabaseTest, ColumnData_Bool) {
 }
 
 TEST(DatabaseTest, ColumnData_Float) {
-  db::ColumnData data(3.1415);
+  const db::ColumnData data(3.1415);
 
   EXPECT_NEAR(data.ToDouble(), 3.1415, 0.0001);
   EXPECT_EQ(data.GetString(), "3.141500");
@@ -35,7 +35,7 @@ TEST(DatabaseTest, ColumnData_Float) {
 }
 
 TEST(DatabaseTest, ColumnData_String) {
-  db::ColumnData data("Test");
+  const db::ColumnData data("Test");
 
   EXPECT_EQ(data.ToStr(), "Test");
   EXPECT_EQ(data.GetString(), "Test");

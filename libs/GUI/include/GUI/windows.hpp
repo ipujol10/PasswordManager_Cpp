@@ -9,17 +9,17 @@
 namespace window {
 class MainWindow : public Fl_Window {
  private:
-  Fl_Group *_password_group;
-  Fl_Group *_password_group2;
-  Fl_Menu_Bar *_menuBar;
+  Fl_Group *password_group_;
+  Fl_Group *password_group2_;
+  Fl_Menu_Bar *menuBar_;
 
-  void password(int width, int height, const char *title);
-  void password2(int width, int height, const char *title);
-  static void go2pass1(Fl_Widget *w, void *v);
-  static void go2pass2(Fl_Widget *w, void *v);
+  void Password(int width_p, int height_p, const char *title);
+  void Password2(int width_p, int height_p, const char *title);
+  static void Go2pass1(Fl_Widget *w, void *v);
+  static void Go2pass2(Fl_Widget *w, void *v);
 
  public:
-  MainWindow(int width, int height, const char *title);
+  MainWindow(int width_p, int height_p, const char *title);
   ~MainWindow() override;
 
   Fl_Window *help;
@@ -27,10 +27,10 @@ class MainWindow : public Fl_Window {
 
 class HelpWindow : public Fl_Window {
  private:
-  Fl_Box *_text;
+  Fl_Box *text_;
 
  public:
-  HelpWindow(int width, int height, const char *title, const char *label);
+  HelpWindow(int width_p, int height_p, const char *title, const char *label);
   ~HelpWindow() override;
 };
 }  // namespace window

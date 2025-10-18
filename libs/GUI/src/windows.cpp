@@ -11,79 +11,79 @@
 #include "menus.hpp"
 
 namespace window {
-MainWindow::MainWindow(int width, int height, const char *title)
-    : Fl_Window(width, height, title) {
-  password(width, height, title);
-  password2(width, height, title);
+MainWindow::MainWindow(int width_p, int height_p, const char *title)
+    : Fl_Window(width_p, height_p, title) {
+  Password(width_p, height_p, title);
+  Password2(width_p, height_p, title);
 
-  const int HEIGHT = 100;
-  const int WIDTH = 300;
-  const int MENU_HEIGHT = 20;
-  help = new HelpWindow(WIDTH, HEIGHT, "Help", "This is help");
+  const int height = 100;
+  const int width = 300;
+  const int menu_height = 20;
+  help = new HelpWindow(width, height, "Help", "This is help");
   help->hide();
 
-  _menuBar = menu::menu(width, MENU_HEIGHT, this);
-  this->add(_menuBar);
+  menuBar_ = menu::Menu(width_p, menu_height, this);
+  this->add(menuBar_);
 
-  _password_group->show();
-  _password_group2->hide();
+  password_group_->show();
+  password_group2_->hide();
 }
 
 MainWindow::~MainWindow() {
-  delete _password_group;
-  delete _password_group2;
+  delete password_group_;
+  delete password_group2_;
   delete help;
 }
 
-void MainWindow::password(int width, int height, const char *title) {
-  _password_group = new Fl_Group(0, 0, width, height, title);
-  const int W = 300;
-  const int H = 25;
-  const int X = (width - W) / 2;
-  const int Y = (height - H) / 2;
-  auto *password = new Fl_Secret_Input(X, Y, W, H, "Password");
-  auto *change = new Fl_Button(X, Y + 50, 100, 25, "Change");
-  change->callback(go2pass2, this);
-  _password_group->end();
-  this->add(_password_group);
+void MainWindow::Password(int width_p, int height_p, const char *title) {
+  password_group_ = new Fl_Group(0, 0, width_p, height_p, title);
+  const int w = 300;
+  const int h = 25;
+  const int x = (width_p - w) / 2;
+  const int y = (height_p - h) / 2;
+  auto *password = new Fl_Secret_Input(x, y, w, h, "Password");
+  auto *change = new Fl_Button(x, y + 50, 100, 25, "Change");
+  change->callback(Go2pass2, this);
+  password_group_->end();
+  this->add(password_group_);
 }
 
-void MainWindow::password2(int width, int height, const char *title) {
-  _password_group2 = new Fl_Group(0, 0, width, height, title);
-  const int W = 100, H = 25;
-  const int X = 0;
-  const int Y = 20;
-  auto *change = new Fl_Button(X, Y, W, H, "Change");
-  change->callback(go2pass1, this);
+void MainWindow::Password2(int width_p, int height_p, const char *title) {
+  password_group2_ = new Fl_Group(0, 0, width_p, height_p, title);
+  const int w = 100, h = 25;
+  const int x = 0;
+  const int y = 20;
+  auto *change = new Fl_Button(x, y, w, h, "Change");
+  change->callback(Go2pass1, this);
 
-  const int WIN_W = this->w(), WIN_H = this->h();
-  const int S_X = 0, S_Y = H + Y, S_W = WIN_W, S_H = WIN_H - S_Y;
-  auto *data_scroll = new Fl_Scroll(S_X, S_Y, S_W, S_H);
+  const int win_w = this->w(), win_h = this->h();
+  const int s_x = 0, s_y = h + y, s_w = win_w, s_h = win_h - s_y;
+  auto *data_scroll = new Fl_Scroll(s_x, s_y, s_w, s_h);
   data_scroll->type(Fl_Scroll::VERTICAL);
   data_scroll->end();
-  _password_group2->end();
-  this->add(_password_group2);
+  password_group2_->end();
+  this->add(password_group2_);
 }
 
-void MainWindow::go2pass1(Fl_Widget *w, void *v) {
+void MainWindow::Go2pass1(Fl_Widget *w, void *v) {
   auto *window = static_cast<MainWindow *>(v);
-  window->_password_group->show();
-  window->_password_group2->hide();
+  window->password_group_->show();
+  window->password_group2_->hide();
 }
 
-void MainWindow::go2pass2(Fl_Widget *w, void *v) {
+void MainWindow::Go2pass2(Fl_Widget *w, void *v) {
   auto *window = static_cast<MainWindow *>(v);
-  window->_password_group->hide();
-  window->_password_group2->show();
+  window->password_group_->hide();
+  window->password_group2_->show();
 }
 
 HelpWindow::HelpWindow(int width, int height, const char *title, const char *label)
     : Fl_Window(width, height, title) {
-  _text = new Fl_Box(0, 0, width, height, label);
-  _text->box(FL_EMBOSSED_BOX);
-  _text->align(FL_ALIGN_LEFT | FL_ALIGN_INSIDE);
-  this->add(_text);
+  text_ = new Fl_Box(0, 0, width, height, label);
+  text_->box(FL_EMBOSSED_BOX);
+  text_->align(FL_ALIGN_LEFT | FL_ALIGN_INSIDE);
+  this->add(text_);
 }
 
-HelpWindow::~HelpWindow() { delete _text; }
+HelpWindow::~HelpWindow() { delete text_; }
 }  // namespace window

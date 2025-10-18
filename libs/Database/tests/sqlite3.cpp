@@ -2,6 +2,12 @@
 
 #include <database/sqlite3.hpp>
 #include <filesystem>
+#include <map>
+#include <string>
+#include <utility>
+#include <vector>
+
+#include "database/database.hpp"
 
 // Friend tests
 namespace db {
@@ -16,7 +22,7 @@ TEST(SQLite3Test_Create, Normal) {
            {"num", ColumnType::Double}}             },
           {"table2", {{"test", ColumnType::Integer}}}
   };
-  SQLite3API db(file_path, tables);
+  const SQLite3API db(file_path, tables);
 
   EXPECT_EQ(db.db_, nullptr);
   EXPECT_EQ(db.file_path_, file_path);

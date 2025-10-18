@@ -94,14 +94,13 @@ CheckOptions:
     readability-identifier-naming.ClassMemberSuffix: ''
     readability-identifier-naming.ClassPrefix: ''
     readability-identifier-naming.ClassSuffix: ''
-    readability-identifier-naming.ConstantCase: UPPER_CASE
     readability-identifier-naming.ConstexprVariableCase: UPPER_CASE
     readability-identifier-naming.ConstexprVariableHungarianPrefix: Off
     readability-identifier-naming.ConstexprVariableIgnoredRegexp: ''
     readability-identifier-naming.ConstexprVariablePrefix: k
     readability-identifier-naming.ConstexprVariableSuffix: ''
     readability-identifier-naming.EnumCase: CamelCase
-    readability-identifier-naming.EnumConstantCase: UPPER_CASE
+    readability-identifier-naming.EnumConstantCase: CamelCase
     readability-identifier-naming.EnumConstantHungarianPrefix: Off
     readability-identifier-naming.EnumConstantIgnoredRegexp: ''
     readability-identifier-naming.EnumConstantPrefix: ''
@@ -110,7 +109,7 @@ CheckOptions:
     readability-identifier-naming.EnumIgnoredRegexp: ''
     readability-identifier-naming.EnumPrefix: ''
     readability-identifier-naming.EnumSuffix: ''
-    readability-identifier-naming.FunctionCase: camelBack
+    readability-identifier-naming.FunctionCase: CamelCase
     readability-identifier-naming.FunctionIgnoredRegexp: ''
     readability-identifier-naming.FunctionPrefix: ''
     readability-identifier-naming.FunctionSuffix: ''
@@ -142,12 +141,12 @@ CheckOptions:
     readability-identifier-naming.ParameterSuffix: ''
     readability-identifier-naming.PrivateMemberHungarianPrefix: Off
     readability-identifier-naming.PrivateMemberIgnoredRegexp: ''
-    readability-identifier-naming.PrivateMemberPrefix: _
-    readability-identifier-naming.PrivateMemberSuffix: ''
+    readability-identifier-naming.PrivateMemberPrefix: ''
+    readability-identifier-naming.PrivateMemberSuffix: _
     readability-identifier-naming.ProtectedMemberHungarianPrefix: Off
     readability-identifier-naming.ProtectedMemberIgnoredRegexp: ''
-    readability-identifier-naming.ProtectedMemberPrefix: _
-    readability-identifier-naming.ProtectedMemberSuffix: ''
+    readability-identifier-naming.ProtectedMemberPrefix: ''
+    readability-identifier-naming.ProtectedMemberSuffix: _
     readability-identifier-naming.PublicMemberHungarianPrefix: Off
     readability-identifier-naming.PublicMemberIgnoredRegexp: ''
     readability-identifier-naming.PublicMemberPrefix: ''

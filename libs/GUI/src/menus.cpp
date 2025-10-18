@@ -8,9 +8,9 @@
 #include "windows.hpp"
 
 namespace menu {
-Fl_Menu_Bar *menu(int w, int h, const window::MainWindow *window) {
+Fl_Menu_Bar *Menu(int w, int h, const window::MainWindow *window) {
   Fl_Menu_Item menu_items[] = {
-      {"&Help", FL_ALT + 'h', (Fl_Callback *)helpCb, (void *)window},
+      {"&Help", FL_ALT + 'h', (Fl_Callback *)HelpCb, (void *)window},
       {nullptr}
   };
   auto *m = new Fl_Menu_Bar(0, 0, w, h);
@@ -18,7 +18,7 @@ Fl_Menu_Bar *menu(int w, int h, const window::MainWindow *window) {
   return m;
 }
 
-void helpCb(Fl_Widget *w, void *v) {
+void HelpCb(Fl_Widget *w, void *v) {
   auto *window = static_cast<window::MainWindow *>(v);
   window->help->show();
 }

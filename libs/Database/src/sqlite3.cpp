@@ -1,5 +1,12 @@
 #include "database/sqlite3.hpp"
 
+#include <map>
+#include <string>
+#include <utility>
+#include <vector>
+
+#include "database.hpp"
+
 namespace db {
 SQLite3API::SQLite3API(
     const std::string& file_path,
@@ -38,14 +45,14 @@ std::map<std::string, std::map<std::string, ColumnType>> db::SQLite3API::Generat
 }
 
 bool SQLite3API::Connect() noexcept {
-  int return_code = sqlite3_open(file_path_.c_str(), &db_);
+  const int return_code = sqlite3_open(file_path_.c_str(), &db_);
   if (!(connected_ = return_code == SQLITE_OK)) error_ = ErrorStatus::CouldNotConnect;
   error_ = ErrorStatus::Ok;
   return connected_;
 }
 
 bool SQLite3API::Disconnect() noexcept {
-  int return_code = sqlite3_close(db_);
+  const int return_code = sqlite3_close(db_);
   if (return_code == SQLITE_OK) {
     connected_ = false;
     db_ = nullptr;

@@ -1,9 +1,12 @@
 #pragma once
 
-#include <gtest/gtest.h>
+#include <gtest/gtest_prod.h>
 #include <sqlite3.h>
 
 #include <map>
+#include <string>
+#include <utility>
+#include <vector>
 
 #include "database.hpp"
 

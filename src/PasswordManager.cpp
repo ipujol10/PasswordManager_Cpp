@@ -3,9 +3,9 @@
 #include <GUI/windows.hpp>
 
 int main(int argc, char *argv[]) {
-  const int WIDTH = 1000, HEIGHT = 700, MENU_HEIGHT = 20;
+  const int width = 1000, height = 700, menu_height = 20;
   const char *title = "Password Manager";
-  auto window = new window::MainWindow(WIDTH, HEIGHT, title);
+  auto window = new window::MainWindow(width, height, title);
   window->show(argc, argv);
   return Fl::run();
 }

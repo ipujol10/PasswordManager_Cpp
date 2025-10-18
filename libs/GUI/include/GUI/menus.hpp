@@ -6,6 +6,6 @@
 #include "windows.hpp"
 
 namespace menu {
-Fl_Menu_Bar *menu(int w, int h, const window::MainWindow *window);
-void helpCb(Fl_Widget *w, void *v);
+Fl_Menu_Bar *Menu(int w, int h, const window::MainWindow *window);
+void HelpCb(Fl_Widget *w, void *v);
 }  // namespace menu
