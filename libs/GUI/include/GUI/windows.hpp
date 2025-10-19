@@ -6,12 +6,17 @@
 #include <FL/Fl_Widget.H>
 #include <FL/Fl_Window.H>
 
+#include <vector>
+
+#include "widgets.hpp"
+
 namespace window {
 class MainWindow : public Fl_Window {
  private:
   Fl_Group *password_group_;
   Fl_Group *password_group2_;
   Fl_Menu_Bar *menuBar_;
+  std::vector<widgets::PasswordEntry *> entries_;
 
   void Password(int width_p, int height_p, const char *title);
   void Password2(int width_p, int height_p, const char *title);

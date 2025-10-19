@@ -6,13 +6,13 @@ set(FLTK_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../external/fltk/share/fltk)
 
 find_package(FLTK REQUIRED CONFIG)
 
-set(SOURCE windows.cpp menus.cpp)
+set(SOURCE windows.cpp menus.cpp widgets.cpp)
 foreach(item IN LISTS SOURCE)
   list(APPEND SOURCE src/${item})
   list(REMOVE_ITEM SOURCE ${item})
 endforeach()
 
-set(HEADER windows.hpp menus.hpp)
+set(HEADER windows.hpp menus.hpp widgets.hpp)
 foreach(item IN LISTS HEADER)
   list(APPEND HEADER include/GUI/${item})
   list(REMOVE_ITEM HEADER ${item})

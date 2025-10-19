@@ -3,12 +3,16 @@
 #include <FL/Enumerations.H>
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Button.H>
+#include <FL/Fl_Pack.H>
 #include <FL/Fl_Scroll.H>
 #include <FL/Fl_Secret_Input.H>
 #include <FL/Fl_Widget.H>
 #include <FL/Fl_Window.H>
 
+#include <string>
+
 #include "menus.hpp"
+#include "widgets.hpp"
 
 namespace window {
 MainWindow::MainWindow(int width_p, int height_p, const char *title)
@@ -33,6 +37,8 @@ MainWindow::~MainWindow() {
   delete password_group_;
   delete password_group2_;
   delete help;
+  for (auto *ptr : entries_) { delete ptr; }
+  entries_.clear();
 }
 
 void MainWindow::Password(int width_p, int height_p, const char *title) {
@@ -60,6 +66,23 @@ void MainWindow::Password2(int width_p, int height_p, const char *title) {
   const int s_x = 0, s_y = h + y, s_w = win_w, s_h = win_h - s_y;
   auto *data_scroll = new Fl_Scroll(s_x, s_y, s_w, s_h);
   data_scroll->type(Fl_Scroll::VERTICAL);
+  data_scroll->box(Fl_Boxtype::FL_DOWN_BOX);
+  auto *pack = new Fl_Pack(s_x, s_y, s_w, s_h);
+  pack->resizable(pack);
+  pack->type(Fl_Pack::VERTICAL);
+  const int entry_height = 30;
+  for (int i = 0; i < 100; ++i) {
+    std::string name = "Name";
+    name += std::to_string(i);
+
+    std::string username = "User Name";
+    username += std::to_string(i);
+
+    auto *widget = new widgets::PasswordEntry(name, username, s_w, entry_height);
+    entries_.push_back(widget);
+  }
+  pack->end();
+  data_scroll->resizable(data_scroll);
   data_scroll->end();
   password_group2_->end();
   this->add(password_group2_);
